@@ -29,17 +29,21 @@ class RestaurantScreen extends StatelessWidget {
             child: FutureBuilder<List>(
               builder: (context, AsyncSnapshot<List> snapshot) {
                 if (!snapshot.hasData) {
-                  return Container();
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
                 return ListView.separated(
                     itemBuilder: (_, index) {
                       final item =snapshot.data![index];
-                      final pItem = RestaurantModel.fromJson(json: item);
+                      final pItem = RestaurantModel.fromJson(
+                          item
+                      );
                       return GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) =>
-                                RestaurantDetailScreen()
+                                RestaurantDetailScreen(id: pItem.id)
                             ),
                           );
                         },
@@ -52,17 +56,6 @@ class RestaurantScreen extends StatelessWidget {
                       );
                     },
                     itemCount: snapshot.data!.length);
-                // return RestaurantCard(
-                //     image: Image.asset(
-                //       'asset/img/food/ddeok_bok_gi.jpg',
-                //       fit: BoxFit.cover,
-                //     ),
-                //     name: '불타는 떡볶이',
-                //     tags: ['떡볶이', '치즈', ' 매운맛'],
-                //     ratingsCount: 100,
-                //     deliveryTime: 15,
-                //     deliveryFee: 2000,
-                //     ratings: 4.52);
               },
               future: paginateRestarnat(),
             )),

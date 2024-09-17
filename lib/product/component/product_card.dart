@@ -1,37 +1,73 @@
 import 'package:actual/common/const/colors.dart';
+import 'package:actual/restaurant/model/restaurant_detail_model.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({Key? key}) : super(key: key);
+
+  final Image image;
+  final String name;
+  final String detail;
+  final int price;
+
+  const ProductCard({
+    required this.image,
+    required this.name,
+    required this.detail,
+    required this.price,
+    Key? key
+  }) : super(key: key);
+
+  factory ProductCard.fromModel({
+    required RestaurantProductModel model
+  }) {
+    print(model.imgUrl);
+    return ProductCard(
+        image: Image.network(model.imgUrl, width: 110, height: 110, fit: BoxFit.cover,),
+        name: model.name,
+        detail: model.detail,
+        price: model.price);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: Image.asset(
-          'asset/img/food/ddeok_bok_gi.jpg',
-          width: 110,
-          height: 110,
-          fit: BoxFit.cover,
+    return IntrinsicHeight(
+      child: Row(children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: image,
         ),
-      ),
-      const SizedBox(width: 16.0,),
-      Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text('떡볶이',
-                style: TextStyle(
-                  fontSize :18.0
+        const SizedBox(
+          width: 16.0,
+        ),
+        Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18.0),
                 ),
-              ),
-              Text('전통 떡볶이의 정석 \n 맛있습니다.',
-              style: ,),
-              Text('₩10000')
-            ],
-          )
-      )
-    ]);
+                Text(detail,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: BODY_TEXT_COLOR,
+                        fontSize: 14.0)),
+                Text(
+                  textAlign: TextAlign.right,
+                  '₩$price',
+                  style: TextStyle(
+                      color: PRIMARY_COLOR,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500
+                  ),
+                )
+              ],
+            ))
+      ]),
+    );
   }
 }
