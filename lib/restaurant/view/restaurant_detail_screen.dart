@@ -1,4 +1,5 @@
 import 'package:actual/common/const/data.dart';
+import 'package:actual/common/dio/dio.dart';
 import 'package:actual/common/layout/default_layout.dart';
 import 'package:actual/product/component/product_card.dart';
 import 'package:actual/restaurant/component/restaurant_card.dart';
@@ -12,12 +13,19 @@ class RestaurantDetailScreen extends StatelessWidget {
 
   const RestaurantDetailScreen({
     required this.id,
-    Key? key
-  }) : super(key: key);
+    super.key
+  });
 
   Future<RestaurantDetailModel> getRestaurantDetail() async {
     final dio = Dio();
+
+    dio.interceptors.add(
+        CustomInterceptor(
+            storage: storage
+        )
+    );
     final repository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+
     return repository.getRestaurantDetail(id: id);
   }
 
@@ -29,8 +37,9 @@ class RestaurantDetailScreen extends StatelessWidget {
           future: getRestaurantDetail(),
           builder: (_,AsyncSnapshot<RestaurantDetailModel> snapshot) {
             if(snapshot.hasError) {
+              print(snapshot.error.toString());
               return Center(
-                child: Text(snapshot.error.toString()),
+                child: Text('Error: ${snapshot.error}'),
               );
             }
             if(!snapshot.hasData) {
