@@ -1,0 +1,13 @@
+import 'package:actual/common/model/model_with_id.dart';
+
+import '../../restaurant/model/restaruant_model.dart';
+import '../model/curosr_pagination_model.dart';
+import '../model/pagination_params.dart';
+
+abstract class IBasePaginationRepository<T extends IModelWithId> {
+
+  Future<CursorPagination<T>> paginate({
+    PaginationParams? paginationParams = const PaginationParams(),
+  });
+
+}

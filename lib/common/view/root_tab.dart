@@ -1,10 +1,15 @@
 import 'package:actual/common/const/colors.dart';
 import 'package:actual/common/layout/default_layout.dart';
+import 'package:actual/order/view/order_screen.dart';
+import 'package:actual/product/view/product_screen.dart';
 import 'package:actual/restaurant/view/restaurnat_screen.dart';
+import 'package:actual/user/view/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RootTab extends StatefulWidget {
+  static String get routeName => "home";
+
   const RootTab({Key? key}) : super(key: key);
 
   @override
@@ -38,16 +43,6 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '코팩 딜리버리',
-      child: TabBarView(
-        physics: NeverScrollableScrollPhysics(),
-        controller: controller,
-        children: [
-          RestaurantScreen(),
-          Center(child: Container(child: Text('음식'))),
-          Center(child: Container(child: Text('주문'))),
-          Center(child: Container(child: Text('프로필'))),
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: PRIMARY_COLOR,
           unselectedItemColor: BODY_TEXT_COLOR,
@@ -58,7 +53,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             controller.animateTo(index);
           },
           currentIndex: index,
-          items: [
+          items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined), label: '홈'),
             BottomNavigationBarItem(
@@ -68,6 +63,16 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             BottomNavigationBarItem(
                 icon: Icon(Icons.person_outline), label: '프로필'),
           ]),
+      child: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: controller,
+        children: [
+          RestaurantScreen(),
+          ProductScreen(),
+          OrderScreen(),
+          ProfileScreen()
+        ],
+      ),
     );
   }
 }
